@@ -2,7 +2,8 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   // baseURL: "https://visionx.quantumsharq.com/api",
-  baseURL: "http://localhost:7001",
+  baseURL: "https://visioncameraback.onrender.com",
+  // baseURL: "http://localhost:7001",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -11,6 +12,6 @@ const axiosInstance = axios.create({
 
 export default axiosInstance;
 // export const baseURL = "https://visionx.quantumsharq.com/api";
-export const baseURL = "http://localhost:7001";
+export const baseURL = "https://visioncameraback.onrender.com";
 
 // https://visionx.quantumsharq.com/api/
