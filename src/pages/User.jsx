@@ -4,7 +4,7 @@ import X from "../assets/x.svg";
 import TnCm from "../assets/TnCm.png";
 import TnLogo from "../assets/TnLogo.png";
 import background from "../assets/background.jpg";
-import axios from "../Util/AxiosInstance";
+import axios, { baseURL } from "../Util/AxiosInstance";
 import { Link } from "react-router-dom";
 import { FaRegDotCircle } from "react-icons/fa";
 import { BiDetail } from "react-icons/bi";
@@ -91,6 +91,33 @@ function User() {
   useEffect(() => {
     getKitData();
     getKitDatas();
+    const ws = new WebSocket(baseURL);
+
+    // On WebSocket connection open
+    ws.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    // On WebSocket message received
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      custData(); // Update data when a message is received
+    };
+
+    // On WebSocket connection close
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    // On WebSocket error
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    // Cleanup function to close WebSocket connection when the component unmounts or dependency changes
+    return () => {
+      ws.close();
+    };
     // const intervalId = setInterval(() => {
     //   getKitData();
     //   console.log(selectedCamera);

@@ -22,30 +22,30 @@ const UserCameraDetails = () => {
     }
   };
 
-  useEffect(() => {
-    getKitData();
-  }, []);
-
-  setInterval(() => {
-    getKitData();
-  }, 3000);
-
   // useEffect(() => {
   //   getKitData();
-  //   const ws = new WebSocket(baseURL); // Corrected WebSocket URL
+  // }, []);
 
-  //   ws.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     getKitData();
-  //   };
-  //   ws.onclose = () => {
-  //     console.log("WebSocket connection closed");
-  //   };
+  // setInterval(() => {
+  //   getKitData();
+  // }, 3000);
 
-  //   return () => {
-  //     ws.close();
-  //   };
-  // }, [visionXId]);
+  useEffect(() => {
+    getKitData();
+    const ws = new WebSocket(baseURL); // Corrected WebSocket URL
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      getKitData();
+    };
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [visionXId]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);

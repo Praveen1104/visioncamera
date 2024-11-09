@@ -16,12 +16,36 @@ const CameraDetailsTable = ({ camData }) => {
     }
   };
   useEffect(() => {
+    // Initial data fetch
     getKitData();
     setVisionxids(camData?.visionXId);
-    // setInterval(() => {
-    //   getKitData();
-    // }, 3000);
-  }, [camData]);
+
+    // Initialize WebSocket connection
+    const ws = new WebSocket(baseURL);
+
+    ws.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setVisionxids(data.visionXId); // Update VisionXId if necessary
+      getKitData(); // Fetch updated data when WebSocket message is received
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    // Cleanup WebSocket connection when component unmounts
+    return () => {
+      ws.close();
+    };
+  }, [camData]); // Dependencies trigger effect when camData changes
 
   if (!camData) return null; // Don't render if no data is passed
   console.log(camData);
